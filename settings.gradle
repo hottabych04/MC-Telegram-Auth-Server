@@ -1,0 +1,4 @@
+rootProject.name = 'MC-Telegram-Auth-Server'
+include 'auth-service'
+include 'telegram-service'
+
