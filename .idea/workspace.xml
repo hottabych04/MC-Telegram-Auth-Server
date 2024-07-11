@@ -5,11 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="00f2ac8d-ad70-4191-91b7-1ae1035dbac9" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/dataSources.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/sqldialects.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/auth-service/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/auth-service/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/auth-service/src/main/resources/db/changelog/db.changelog-1.0.sql" beforeDir="false" afterPath="$PROJECT_DIR$/auth-service/src/main/resources/db/changelog/db.changelog-1.0.sql" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/auth-service/src/main/resources/db/changelog/db.changelog-master.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/auth-service/src/main/resources/db/changelog/db.changelog-master.yaml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -128,7 +125,9 @@
   <component name="PropertiesComponent">{
   &quot;keyToString&quot;: {
     &quot;Gradle.AccountRepositoryIT.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.AccountRepositoryIT.findById.executor&quot;: &quot;Run&quot;,
     &quot;Gradle.AccountRepositoryIT.findByid.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.AccountRepositoryIT.save.executor&quot;: &quot;Run&quot;,
     &quot;Gradle.AccountRepositoryTest.findByid.executor&quot;: &quot;Run&quot;,
     &quot;Gradle.Build MC-Telegram-Auth-Server.executor&quot;: &quot;Run&quot;,
     &quot;Gradle.Download Sources.executor&quot;: &quot;Run&quot;,
@@ -143,7 +142,7 @@
     &quot;RequestMappingsPanelWidth1&quot;: &quot;75&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
-    &quot;Spring Boot.AuthServiceRunner.executor&quot;: &quot;Debug&quot;,
+    &quot;Spring Boot.AuthServiceRunner.executor&quot;: &quot;Run&quot;,
     &quot;Spring Boot.AuthServiceStarter.executor&quot;: &quot;Run&quot;,
     &quot;com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary&quot;: &quot;JUnit5&quot;,
     &quot;com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5&quot;: &quot;&quot;,
@@ -185,7 +184,7 @@
       <command value="gradle auth-service: --version" />
     </option>
   </component>
-  <component name="RunManager" selected="Gradle.AccountRepositoryIT.findByid">
+  <component name="RunManager" selected="Spring Boot.AuthServiceRunner">
     <configuration name="AccountRepositoryIT" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
@@ -200,6 +199,30 @@
             <option value=":auth-service:test" />
             <option value="--tests" />
             <option value="&quot;auth.plugin.mc.integration.database.repository.AccountRepositoryIT&quot;" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <ExternalSystemDebugServerProcess>false</ExternalSystemDebugServerProcess>
+      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <DebugAllEnabled>false</DebugAllEnabled>
+      <RunAsTest>true</RunAsTest>
+      <method v="2" />
+    </configuration>
+    <configuration name="AccountRepositoryIT.findById" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" value="" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value=":auth-service:test" />
+            <option value="--tests" />
+            <option value="&quot;auth.plugin.mc.integration.database.repository.AccountRepositoryIT.findById&quot;" />
           </list>
         </option>
         <option name="vmOptions" />
@@ -234,7 +257,7 @@
       <RunAsTest>true</RunAsTest>
       <method v="2" />
     </configuration>
-    <configuration name="AccountRepositoryTest.findByid" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+    <configuration name="AccountRepositoryIT.save" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
@@ -247,7 +270,7 @@
           <list>
             <option value=":auth-service:test" />
             <option value="--tests" />
-            <option value="&quot;auth.plugin.mc.integration.database.repository.AccountRepositoryTest.findByid&quot;" />
+            <option value="&quot;auth.plugin.mc.integration.database.repository.AccountRepositoryIT.save&quot;" />
           </list>
         </option>
         <option name="vmOptions" />
@@ -256,28 +279,6 @@
       <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
       <DebugAllEnabled>false</DebugAllEnabled>
       <RunAsTest>true</RunAsTest>
-      <method v="2" />
-    </configuration>
-    <configuration name="MC-Telegram-Auth-Server:auth-service [help]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
-      <ExternalSystemSettings>
-        <option name="executionName" />
-        <option name="externalProjectPath" value="$PROJECT_DIR$/auth-service" />
-        <option name="externalSystemIdString" value="GRADLE" />
-        <option name="scriptParameters" />
-        <option name="taskDescriptions">
-          <list />
-        </option>
-        <option name="taskNames">
-          <list>
-            <option value="help" />
-          </list>
-        </option>
-        <option name="vmOptions" />
-      </ExternalSystemSettings>
-      <ExternalSystemDebugServerProcess>true</ExternalSystemDebugServerProcess>
-      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
-      <DebugAllEnabled>false</DebugAllEnabled>
-      <RunAsTest>false</RunAsTest>
       <method v="2" />
     </configuration>
     <configuration name="AuthServiceRunner" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" temporary="true" nameIsGenerated="true">
@@ -295,11 +296,11 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Gradle.AccountRepositoryIT.findByid" />
         <item itemvalue="Spring Boot.AuthServiceRunner" />
         <item itemvalue="Gradle.AccountRepositoryIT" />
-        <item itemvalue="Gradle.AccountRepositoryTest.findByid" />
-        <item itemvalue="Gradle.MC-Telegram-Auth-Server:auth-service [help]" />
+        <item itemvalue="Gradle.AccountRepositoryIT.save" />
+        <item itemvalue="Gradle.AccountRepositoryIT.findById" />
+        <item itemvalue="Gradle.AccountRepositoryIT.findByid" />
       </list>
     </recent_temporary>
   </component>
@@ -328,6 +329,9 @@
       <workItem from="1720558280544" duration="437000" />
       <workItem from="1720558857313" duration="165000" />
       <workItem from="1720641582047" duration="15785000" />
+      <workItem from="1720657442707" duration="326000" />
+      <workItem from="1720687506394" duration="7846000" />
+      <workItem from="1720724627518" duration="8743000" />
     </task>
     <task id="LOCAL-00001" summary="Init commit">
       <option name="closed" value="true" />
@@ -385,7 +389,15 @@
       <option name="project" value="LOCAL" />
       <updated>1720649311007</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="Create account POJO">
+      <option name="closed" value="true" />
+      <created>1720657691963</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1720657691963</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -409,17 +421,7 @@
     <MESSAGE value="Some changes in idea files" />
     <MESSAGE value="Create application.yml" />
     <MESSAGE value="Create database migration" />
-    <option name="LAST_COMMIT_MESSAGE" value="Create database migration" />
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/auth-service/src/main/java/auth/plugin/mc/AuthServiceRunner.java</url>
-          <line>11</line>
-          <option name="timeStamp" value="4" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
+    <MESSAGE value="Create account POJO" />
+    <option name="LAST_COMMIT_MESSAGE" value="Create account POJO" />
   </component>
 </project>
