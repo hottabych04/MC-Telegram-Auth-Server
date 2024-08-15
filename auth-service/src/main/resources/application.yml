@@ -1,6 +1,14 @@
+server:
+  port: 8080
+
 spring:
   datasource:
-    url: jdbc:postgresql://${DB_HOST:localhost}:${DB_PORT:5432}/${DB_NAME:-db}
+    url: jdbc:postgresql://${DB_HOST:localhost}:${DB_PORT:5432}/${DB_NAME:users-db}
     username: ${DB_USER:user}
     password: ${DB_PASSWORD:password}
     driver-class-name: org.postgresql.Driver
+  rabbitmq:
+    host: ${RABBITMQ_CONTAINER_NAME:localhost}
+    username: ${RABBITMQ_USER:user}
+    password: ${RABBITMQ_PASSWORD:password}
+    port: ${RABBITMQ_PORT:5672}

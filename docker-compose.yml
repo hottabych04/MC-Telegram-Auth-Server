@@ -18,6 +18,26 @@ services:
       timeout: 5s
       retries: 10
 
+  rabbitmq:
+    image: rabbitmq:3.13.6-management-alpine
+    container_name: $RABBITMQ_CONTAINER_NAME
+    restart: unless-stopped
+    env_file:
+      - .env
+    environment:
+      RABBITMQ_DEFAULT_USER: $RABBITMQ_USER
+      RABBITMQ_DEFAULT_PASS: $RABBITMQ_PASSWORD
+      RABBITMQ_SERVER_ADDITIONAL_ERL_ARGS: -rabbit disk_free_limit 2147483648
+    ports:
+      - "${RABBITMQ_ADMIN_PORT}:15672"
+      - "${RABBITMQ_PORT}:5672"
+    healthcheck:
+      test: [ "CMD", "nc", "-z", "localhost", "5672" ]
+      start_period: 5s
+      interval: 3s
+      timeout: 5s
+      retries: 10
+
   auth-service:
     build: ./auth-service
     container_name: $WEB_APP_CONTAINER_NAME
@@ -29,7 +49,15 @@ services:
     depends_on:
       db:
         condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
+      telegram-service:
+        condition: service_healthy
     environment:
+      RABBITMQ_CONTAINER_NAME: $RABBITMQ_CONTAINER_NAME
+      RABBITMQ_USER: $RABBITMQ_USER
+      RABBITMQ_PASSWORD: $RABBITMQ_PASSWORD
+      RABBITMQ_PORT: $RABBITMQ_PORT
       DB_PASSWORD: $POSTGRES_PASSWORD
       DB_USER: $POSTGRES_USER
       DB_NAME: $POSTGRES_DB
@@ -43,7 +71,17 @@ services:
     env_file:
       - .env
     ports:
-      - "${TG_APP_PORT}:8080"
+      - "${TG_APP_PORT}:8081"
     depends_on:
-      db:
+      rabbitmq:
         condition: service_healthy
+    environment:
+      RABBITMQ_CONTAINER_NAME: $RABBITMQ_CONTAINER_NAME
+      RABBITMQ_USER: $RABBITMQ_USER
+      RABBITMQ_PASSWORD: $RABBITMQ_PASSWORD
+      RABBITMQ_PORT: $RABBITMQ_PORT
+    healthcheck:
+      test: wget --no-verbose --tries=1 --spider localhost:8081/actuator/health || exit 1
+      interval: 3s
+      retries: 10
+      timeout: 5s
