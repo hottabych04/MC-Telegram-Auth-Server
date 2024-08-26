@@ -12,12 +12,12 @@ public class RabbitMQConfig {
 
     @Bean
     public Queue loginQueue(){
-        return new Queue("login_queue");
+        return new Queue("login_req_queue");
     }
 
     @Bean
     public Queue registerQueue(){
-        return new Queue("register_queue");
+        return new Queue("register_req_queue");
     }
 
     @Bean
