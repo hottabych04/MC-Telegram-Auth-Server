@@ -4,6 +4,8 @@ import org.springframework.amqp.core.Binding;
 import org.springframework.amqp.core.BindingBuilder;
 import org.springframework.amqp.core.Queue;
 import org.springframework.amqp.core.TopicExchange;
+import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
+import org.springframework.amqp.support.converter.MessageConverter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -11,13 +13,25 @@ import org.springframework.context.annotation.Configuration;
 public class RabbitMQConfig {
 
     @Bean
-    public Queue registerInviteQueue(){
-        return new Queue("register_invite_queue");
+    public MessageConverter jsonMessageConverter(){
+        return new Jackson2JsonMessageConverter();
     }
 
     @Bean
-    public Queue loginInviteQueue(){
-        return new Queue("login_invite_queue");
+    public Queue loginReqQueue(){
+        return new Queue("login_req_queue");
+    }
+
+    @Bean
+    public TopicExchange authExchange(){
+        return new TopicExchange("auth_req_exchange");
+    }
+
+    @Bean
+    public Binding loginReqBinding(){
+        return BindingBuilder.bind(loginQueue())
+                .to(tgExchange())
+                .with("login_req_routing_key");
     }
 
     @Bean
@@ -37,42 +51,28 @@ public class RabbitMQConfig {
 
 
     @Bean
-    public TopicExchange authExchange(){
+    public TopicExchange tgExchange(){
         return new TopicExchange("auth_resp_exchange");
-    }
-
-    @Bean
-    public Binding registerInviteBinding(){
-        return BindingBuilder.bind(registerInviteQueue())
-                .to(authExchange())
-                .with("register_invite_routing_key");
-    }
-
-    @Bean
-    public Binding loginInviteBinding(){
-        return BindingBuilder.bind(registerInviteQueue())
-                .to(authExchange())
-                .with("login_invite_routing_key");
     }
 
     @Bean
     public Binding loginBinding(){
         return BindingBuilder.bind(loginQueue())
-                .to(authExchange())
+                .to(tgExchange())
                 .with("login_routing_key");
     }
 
     @Bean
     public Binding registerBinding(){
         return BindingBuilder.bind(registerQueue())
-                .to(authExchange())
+                .to(tgExchange())
                 .with("register_routing_key");
     }
 
     @Bean
     public Binding notAuthBinding(){
         return BindingBuilder.bind(notAuthQueue())
-                .to(authExchange())
+                .to(tgExchange())
                 .with("not_auth_routing_key");
     }
 

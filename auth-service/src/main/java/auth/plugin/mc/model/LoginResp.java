@@ -1,4 +1,4 @@
-package auth.plugin.mc.dto;
+package auth.plugin.mc.model;
 
 import lombok.*;
 
@@ -7,9 +7,7 @@ import lombok.*;
 @Getter
 @Setter
 @Builder
-public class PluginAccountDto {
-
-    private String username;
+public class LoginResp {
 
     private String uuid;
 

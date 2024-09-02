@@ -11,5 +11,4 @@ public interface AccountRepository extends CrudRepository<Account, Integer> {
 
     Optional<Account> findByUuid(String uuid);
 
-    Optional<Account> findByTelegramId(String telegramId);
 }

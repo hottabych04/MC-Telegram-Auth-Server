@@ -1,6 +1,9 @@
 server:
   port: 8081
 
+telegram:
+  token: <Bot-Token>
+
 spring:
   rabbitmq:
     host: ${RABBITMQ_CONTAINER_NAME:localhost}

@@ -11,15 +11,15 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 @Entity
-@Table(name = "account")
-public class Account {
+@Table(name = "registration")
+public class Registration {
+
+    @OneToOne
+    @JoinColumn(name = "account_id")
+    private Account account;
 
     @Id
-    private String uuid;
+    @Column(name = "registration_hash", nullable = false)
+    private String registrationHash;
 
-    @Column(nullable = false)
-    private String username;
-
-    @Column(name = "telegram_id")
-    private String telegramId;
 }

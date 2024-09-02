@@ -1,4 +1,4 @@
-package auth.plugin.mc.dto;
+package auth.plugin.mc.model.dto;
 
 import lombok.*;
 
@@ -7,11 +7,10 @@ import lombok.*;
 @Getter
 @Setter
 @Builder
-public class AccountDto {
+public class PluginAccountDto {
 
     private String username;
 
     private String uuid;
 
-    private String telegramId;
 }

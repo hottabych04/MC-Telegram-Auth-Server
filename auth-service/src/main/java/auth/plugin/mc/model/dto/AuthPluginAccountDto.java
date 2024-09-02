@@ -1,4 +1,4 @@
-package auth.plugin.mc.dto;
+package auth.plugin.mc.model.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;

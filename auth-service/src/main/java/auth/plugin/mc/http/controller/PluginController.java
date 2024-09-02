@@ -1,6 +1,6 @@
 package auth.plugin.mc.http.controller;
 
-import auth.plugin.mc.dto.PluginAccountDto;
+import auth.plugin.mc.model.dto.PluginAccountDto;
 import auth.plugin.mc.service.AuthenticationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

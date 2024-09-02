@@ -15,5 +15,9 @@ spring:
 
 minecraft:
   plugin:
-    ip: 192.168.10.72
+    ip: 192.168.10.71
     port: 7070
+
+telegram:
+  bot:
+    name: <Bot-Name>
