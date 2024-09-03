@@ -9,6 +9,7 @@ import auth.plugin.mc.model.RegisterResp;
 import auth.plugin.mc.model.dto.PluginAccountDto;
 import auth.plugin.mc.model.dto.AuthPluginAccountDto;
 import auth.plugin.mc.mapper.PluginAccountDtoMapper;
+import auth.plugin.mc.util.AuthActionType;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -93,7 +94,14 @@ public class AuthenticationService {
                 .url("https://t.me/" + botName + "?start=" + generedHash)
                 .build();
 
-        restTemplate.postForEntity(getHttpAddress("/register/invite"), authAccountDto, AuthPluginAccountDto.class);
+        restTemplate.postForEntity(
+                getHttpAddress(
+                        "/auth/invite",
+                        "action=" + AuthActionType.REGISTER.getValue()
+                ),
+                authAccountDto,
+                AuthPluginAccountDto.class
+        );
 
     }
 
@@ -111,7 +119,14 @@ public class AuthenticationService {
                 .url("https://t.me/" + botName)
                 .build();
 
-        restTemplate.postForEntity(getHttpAddress("/login/invite"), authAccountDto, AuthPluginAccountDto.class);
+        restTemplate.postForEntity(
+                getHttpAddress(
+                        "/auth/invite",
+                        "action=" + AuthActionType.LOGIN.getValue()
+                ),
+                authAccountDto,
+                AuthPluginAccountDto.class
+        );
     }
 
     @RabbitListener(queues = "register_queue")
@@ -138,7 +153,14 @@ public class AuthenticationService {
 
         PluginAccountDto playerAcc = pluginAccountDtoMapper.map(account);
 
-        restTemplate.postForEntity(getHttpAddress("/login"), playerAcc, PluginAccountDto.class);
+        restTemplate.postForEntity(
+                getHttpAddress(
+                        "/auth",
+                        "action=" + AuthActionType.LOGIN.getValue()
+                ),
+                playerAcc,
+                PluginAccountDto.class
+        );
 
     }
 
@@ -162,7 +184,14 @@ public class AuthenticationService {
 
         registrationRepository.delete(registration);
 
-        restTemplate.postForEntity(getHttpAddress("/register"), playerAcc, PluginAccountDto.class);
+        restTemplate.postForEntity(
+                getHttpAddress(
+                        "/auth",
+                        "action=" + AuthActionType.REGISTER.getValue()
+                ),
+                playerAcc,
+                PluginAccountDto.class
+        );
 
     }
 
@@ -170,11 +199,26 @@ public class AuthenticationService {
 
         PluginAccountDto playerAcc = pluginAccountDtoMapper.map(acc);
 
-        restTemplate.postForEntity(getHttpAddress("/not/auth"), playerAcc, PluginAccountDto.class);
+        restTemplate.postForEntity(
+                getHttpAddress("/auth/not"),
+                playerAcc,
+                PluginAccountDto.class
+        );
 
     }
 
     private String getHttpAddress(String path){
-        return ("http://" + pluginIp + ":" + pluginPort + path);
+        return getHttpAddress(path, null);
+    }
+
+    private String getHttpAddress(String path, String param){
+        String url = ("http://" + pluginIp + ":" + pluginPort + path);
+
+        if (param != null) {
+            url = url + "?" + param;
+            return url;
+        }
+
+        return url;
     }
 }
