@@ -22,10 +22,10 @@ public class AuthBot implements SpringLongPollingBot, LongPollingSingleThreadUpd
 
     private final TelegramService telegramService;
 
-    @Value("${telegram.token}")
-    private String botToken;
+    private final String botToken;
 
-    public AuthBot(TelegramService telegramService){
+    public AuthBot(TelegramService telegramService, String botToken){
+        this.botToken = botToken;
         telegramClient = new OkHttpTelegramClient(getBotToken());
         this.telegramService = telegramService;
     }
