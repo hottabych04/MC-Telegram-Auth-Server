@@ -13,12 +13,15 @@ import auth.plugin.mc.util.AuthActionType;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import net.glxn.qrgen.core.image.ImageType;
+import net.glxn.qrgen.javase.QRCode;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import java.io.ByteArrayOutputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 import java.util.Optional;
@@ -88,11 +91,9 @@ public class AuthenticationService {
 
         registrationRepository.save(registration);
 
-        AuthPluginAccountDto authAccountDto = AuthPluginAccountDto.builder()
-                .username(account.getUsername())
-                .uuid(account.getUuid())
-                .url("https://t.me/" + botName + "?start=" + generedHash)
-                .build();
+        String regUrl = ("https://t.me/" + botName + "?start=" + generedHash);
+
+        AuthPluginAccountDto authAccountDto = genQrCode(account, regUrl);
 
         restTemplate.postForEntity(
                 getHttpAddress(
@@ -113,11 +114,9 @@ public class AuthenticationService {
 
         rabbitTemplate.convertAndSend("auth_req_exchange", "login_req_routing_key", account);
 
-        AuthPluginAccountDto authAccountDto = AuthPluginAccountDto.builder()
-                .username(account.getUsername())
-                .uuid(account.getUuid())
-                .url("https://t.me/" + botName)
-                .build();
+        String logUrl = ("https://t.me/" + botName);
+
+        AuthPluginAccountDto authAccountDto = genQrCode(account, logUrl);
 
         restTemplate.postForEntity(
                 getHttpAddress(
@@ -127,6 +126,24 @@ public class AuthenticationService {
                 authAccountDto,
                 AuthPluginAccountDto.class
         );
+    }
+
+    private AuthPluginAccountDto genQrCode(Account account, String url) {
+        ByteArrayOutputStream bout = QRCode.from(url)
+                .withSize(127, 127)
+                .to(ImageType.PNG)
+                .stream();
+
+        String base64QrCode = new String(Base64.getEncoder().encode(bout.toByteArray()), StandardCharsets.UTF_8);
+
+        AuthPluginAccountDto authAccountDto = AuthPluginAccountDto.builder()
+                .username(account.getUsername())
+                .uuid(account.getUuid())
+                .url(url)
+                .qrCode(base64QrCode)
+                .build();
+
+        return authAccountDto;
     }
 
     @RabbitListener(queues = "register_queue")

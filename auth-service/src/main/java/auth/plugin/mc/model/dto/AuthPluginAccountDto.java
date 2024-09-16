@@ -19,4 +19,7 @@ public class AuthPluginAccountDto {
     @JsonProperty("url")
     private String url;
 
+    @JsonProperty("qrCode")
+    private String qrCode;
+
 }
