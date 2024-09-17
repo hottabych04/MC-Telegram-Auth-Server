@@ -8,8 +8,7 @@ import org.springframework.context.ConfigurableApplicationContext;
 public class AuthServiceRunner {
 
     public static void main(String[] args) {
-        ConfigurableApplicationContext context = SpringApplication.run(AuthServiceRunner.class);
-        System.out.println(context);
+        SpringApplication.run(AuthServiceRunner.class);
     }
 
 }

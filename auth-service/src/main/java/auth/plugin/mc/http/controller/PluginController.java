@@ -5,6 +5,7 @@ import auth.plugin.mc.service.AuthenticationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -17,7 +18,7 @@ public class PluginController {
     @PostMapping(value = "/join",
             consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
-    public void accountJoin(@RequestBody PluginAccountDto req){
+    public void accountJoin(@RequestBody @Validated PluginAccountDto req){
         authenticationService.joinProduce(req);
     }
 

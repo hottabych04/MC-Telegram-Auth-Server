@@ -59,21 +59,21 @@ public class AuthenticationService {
 
         if (accountOptional.isEmpty()){
 
-            authInviteThreadPool.execute(() -> sendRegisterRequest(acc));
+            authInviteThreadPool.execute(() -> registerInvite(acc));
 
         } else if (accountOptional.get().getTelegramId() == null) {
 
-            authInviteThreadPool.execute(() -> sendRegisterRequest(acc));
+            authInviteThreadPool.execute(() -> registerInvite(acc));
 
         } else {
 
-            authInviteThreadPool.execute(() -> sendLoginRequest(acc));
+            authInviteThreadPool.execute(() -> loginInvite(acc));
 
         }
 
     }
 
-    private void sendRegisterRequest(PluginAccountDto acc) {
+    private void registerInvite(PluginAccountDto acc) {
 
         Account account = Account.builder()
                 .uuid(acc.getUuid())
@@ -106,11 +106,9 @@ public class AuthenticationService {
 
     }
 
-    private void sendLoginRequest(PluginAccountDto accDto){
+    private void loginInvite(PluginAccountDto accDto){
 
-        Optional<Account> accountOpt = accountRepository.findByUuid(accDto.getUuid());
-
-        Account account = accountOpt.get();
+        Account account = accountRepository.findByUuid(accDto.getUuid()).get();
 
         rabbitTemplate.convertAndSend("auth_req_exchange", "login_req_routing_key", account);
 
@@ -129,6 +127,7 @@ public class AuthenticationService {
     }
 
     private AuthPluginAccountDto genQrCode(Account account, String url) {
+
         ByteArrayOutputStream bout = QRCode.from(url)
                 .withSize(127, 127)
                 .to(ImageType.PNG)
@@ -147,24 +146,20 @@ public class AuthenticationService {
     }
 
     @RabbitListener(queues = "register_queue")
-    public void consumeRegister(RegisterResp resp){registerPlayer(resp);
-    }
+    public void consumeRegister(RegisterResp resp){registerPlayer(resp);}
 
     @RabbitListener(queues = "login_queue")
     public void consumeLogin(LoginResp resp){
         loginPlayer(resp);
     }
 
-    @RabbitListener(queues = "not_auth_queue")
-    public void consumeNotAuth(Account acc){
-        notAuthPlayer(acc);
-    }
-
     private void loginPlayer(LoginResp resp){
 
         Optional<Account> accountOptional = accountRepository.findByUuid(resp.getUuid());
 
-        if (accountOptional.isEmpty()) { return; }
+        if (accountOptional.isEmpty()) {
+            unauthorizedPlayer(resp.getUuid());
+        }
 
         Account account = accountOptional.get();
 
@@ -187,7 +182,9 @@ public class AuthenticationService {
 
         Optional<Registration> registrationOpt = registrationRepository.findByAccount_Uuid(uuid);
 
-        if (registrationOpt.isEmpty()) { return; }
+        if (registrationOpt.isEmpty()) {
+            unauthorizedPlayer(uuid);
+        }
 
         Registration registration = registrationOpt.get();
 
@@ -212,16 +209,12 @@ public class AuthenticationService {
 
     }
 
-    private void notAuthPlayer(Account acc) {
-
-        PluginAccountDto playerAcc = pluginAccountDtoMapper.map(acc);
-
+    private void unauthorizedPlayer(String uuid){
         restTemplate.postForEntity(
                 getHttpAddress("/auth/not"),
-                playerAcc,
-                PluginAccountDto.class
+                uuid,
+                String.class
         );
-
     }
 
     private String getHttpAddress(String path){

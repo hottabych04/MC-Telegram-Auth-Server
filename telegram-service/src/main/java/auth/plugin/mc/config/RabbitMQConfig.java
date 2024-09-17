@@ -45,12 +45,6 @@ public class RabbitMQConfig {
     }
 
     @Bean
-    public Queue notAuthQueue(){
-        return new Queue("not_auth_queue");
-    }
-
-
-    @Bean
     public TopicExchange tgExchange(){
         return new TopicExchange("auth_resp_exchange");
     }
@@ -67,13 +61,6 @@ public class RabbitMQConfig {
         return BindingBuilder.bind(registerQueue())
                 .to(tgExchange())
                 .with("register_routing_key");
-    }
-
-    @Bean
-    public Binding notAuthBinding(){
-        return BindingBuilder.bind(notAuthQueue())
-                .to(tgExchange())
-                .with("not_auth_routing_key");
     }
 
 }
